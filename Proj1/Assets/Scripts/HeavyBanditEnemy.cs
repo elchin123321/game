@@ -1,38 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class HeavyBanditEnemy: EmenyAbstract
 {
 
     private float health=1;
+    private Hero hero;
+    private Animator anim;
 
     private float timeBtwAttack;
     public float startTimeBtwAttack;
+    private bool attack=false;
     public float damage;
-    private Hero hero;
+    public float speed;
+    public float attackRange;
+    private float seeRange;
+    private float rangeBtwHero;
+    private bool isDead = false;
+
+  
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         health = 1;
-        startTimeBtwAttack = 1.5f;
-        timeBtwAttack = startTimeBtwAttack;
+        timeBtwAttack = 0;
         hero = FindObjectOfType<Hero>();
-        damage = 0.33f;
+        seeRange = 6.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        rangeBtwHero = System.Math.Abs(hero.transform.position.x - transform.position.x);
+        if (rangeBtwHero < seeRange && rangeBtwHero >= attackRange && !isDead) Pursuit();
+        else anim.SetBool("isRun", false);
         
     }
 
     override public void TakeDamage(float damage)
     {
         health -= damage;
-        if (health <= 0)
+        if(!attack && !isDead)anim.SetTrigger("hit");
+        if (health <= 0 && !isDead)
         {
-            Destroy(gameObject);
+            isDead = true;
+            anim.SetTrigger("die");
+            Destroy(gameObject, 1f);
         }
         Debug.Log(health);
     }
@@ -41,9 +56,10 @@ public class HeavyBanditEnemy: EmenyAbstract
     {
         if(other.CompareTag("Player"))
         {
-            if(timeBtwAttack <= 0)
+            if(!attack && timeBtwAttack<=0 && !isDead)
             {
-                OnEnemyAttack();
+                attack = true;
+                anim.SetTrigger("attack");
             }
             else
             {
@@ -51,17 +67,39 @@ public class HeavyBanditEnemy: EmenyAbstract
             }
         }
     }
-    public void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            timeBtwAttack = startTimeBtwAttack;
-        }
-        }
+    
 
+    //Вызывается во время анимации
     public void OnEnemyAttack()
     {
-        hero.TakeDamage(damage);
+        if (rangeBtwHero <= attackRange+0.15)
+        {
+            hero.TakeDamage(damage);
+        }
         timeBtwAttack = startTimeBtwAttack;
+        attack = false;
+
     }
+    //Вызывается в конце анимации
+   
+
+    public void Pursuit()
+    {
+        if (hero.transform.position.x - transform.position.x > 0.0f)
+        {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        if (!attack)
+        {
+            anim.SetBool("inBattle", true);
+            anim.SetBool("isRun", true);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(hero.transform.position.x,transform.position.y), speed * Time.deltaTime);
+        }
+    }
+
+    
 }
