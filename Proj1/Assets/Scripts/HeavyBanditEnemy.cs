@@ -4,11 +4,11 @@ using UnityEngine;
 using DG.Tweening;
 public class HeavyBanditEnemy: EmenyAbstract
 {
-
+    [SerializeField] private EnemyHealthBarLineRenderer healthBar;
     private float health=1;
     private Hero hero;
     private Animator anim;
-
+    private AudioSource attackSound;
     private float timeBtwAttack;
     public float startTimeBtwAttack;
     private bool attack=false;
@@ -23,6 +23,7 @@ public class HeavyBanditEnemy: EmenyAbstract
     // Start is called before the first frame update
     void Start()
     {
+        attackSound = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         health = 1;
         timeBtwAttack = 0;
@@ -41,7 +42,11 @@ public class HeavyBanditEnemy: EmenyAbstract
 
     override public void TakeDamage(float damage)
     {
-        health -= damage;
+        if (!isDead)
+        {
+            health -= damage;
+            healthBar.RedceHealthBar(damage);
+        }
         if(!attack && !isDead)anim.SetTrigger("hit");
         if (health <= 0 && !isDead)
         {
@@ -60,6 +65,7 @@ public class HeavyBanditEnemy: EmenyAbstract
             {
                 attack = true;
                 anim.SetTrigger("attack");
+                
             }
             else
             {
@@ -75,7 +81,9 @@ public class HeavyBanditEnemy: EmenyAbstract
         if (rangeBtwHero <= attackRange+0.15)
         {
             hero.TakeDamage(damage);
+            
         }
+        attackSound.Play();
         timeBtwAttack = startTimeBtwAttack;
         attack = false;
 

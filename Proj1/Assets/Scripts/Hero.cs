@@ -25,12 +25,14 @@ public class Hero : MonoBehaviour
     private Rigidbody2D rg2D;
     private SpriteRenderer sprite;
     private Animator anim;
+    private AudioSource attackSound;
     private int facingDirection = 1;
     private bool grounded = false;
     private bool isBlock = false;
     private bool isRoll = false;
     float inputX;
 
+    [SerializeField]private ParticleSystem hitEffect;
     public float timeBtwAttack;
     public float startTimeBtwAttack;
     public Transform attackPos;
@@ -62,6 +64,7 @@ public class Hero : MonoBehaviour
         anim = GetComponent<Animator>();
         rg2D = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        attackSound = GetComponent<AudioSource>();
         health = 1;
         nameBar.text = DataHolder.HeroName;
     }
@@ -140,6 +143,7 @@ public class Hero : MonoBehaviour
             if (!isRoll)
             {
                 health -= damage * 0.15f;
+                hitEffect.Play();
             }
             if (health <= 0)
             {
@@ -166,6 +170,8 @@ public class Hero : MonoBehaviour
         {        
                 currentAttack++;
                 if (currentAttack > 3) currentAttack = 1;
+                attackSound.pitch = Random.Range(0.8f, 1.2f);
+                attackSound.Play();
                 anim.SetTrigger("attack" + currentAttack);
                 Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, enemy);
                 for (int i = 0; i < enemies.Length; i++)
