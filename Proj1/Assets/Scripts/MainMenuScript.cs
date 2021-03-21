@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
-    public GameObject inputNamePanel;
-    public GameObject settingsPanel;
-    public InputField heroNameInputField;
-    
+    [SerializeField] GameObject settingsPanel;
+    [SerializeField] GameObject registerPanel;
+    [SerializeField] GameObject signInPanel;
+    [SerializeField] GameObject regSginInChoisePanel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +20,12 @@ public class MainMenuScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)&& (!inputNamePanel.activeSelf || !settingsPanel.activeSelf))
+        if (Input.GetKeyDown(KeyCode.Escape)&& (!regSginInChoisePanel.activeSelf || !settingsPanel.activeSelf))
         {
             settingsPanel.SetActive(false);
-            inputNamePanel.SetActive(false);
+            regSginInChoisePanel.SetActive(false);
+            signInPanel.SetActive(false);
+            registerPanel.SetActive(false);
         }
     }
     
@@ -33,12 +36,23 @@ public class MainMenuScript : MonoBehaviour
 
     public void PlayClick()
     {
-        inputNamePanel.SetActive(true);
+        regSginInChoisePanel.SetActive(true);
     }
 
-    public void EndInput(string name)
+    public void StartGame(string name)
     {
-        DataHolder.HeroName=heroNameInputField.text;
         SceneManager.LoadScene("Level_1");
+        DataHolder.HeroName = name;
+        
+    }
+    public void RegisterActivateButton()
+    {
+        registerPanel.SetActive(true);
+        regSginInChoisePanel.SetActive(false);
+    }
+    public void SignInActivateButton()
+    {
+        signInPanel.SetActive(true);
+        regSginInChoisePanel.SetActive(false);
     }
 }
