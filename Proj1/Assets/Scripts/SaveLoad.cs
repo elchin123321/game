@@ -1,68 +1,21 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class SaveLoad : MonoBehaviour
+public class SaveLoad
 {
-
-    public static string path;
-    [SerializeField] Hero hero;
-
-    public void Awake()
+   static public void SaveJSON(object obj)
     {
-
-
-        path = Application.persistentDataPath + "/GameData.sm";
-
-        LoadGame();
-
+        File.WriteAllText(Hero.savePath, JsonUtility.ToJson(obj));
     }
 
-    public void SaveGame()
+    static public T LoadJson<T>()
     {
-
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = new FileStream(path, FileMode.Create);
-
-        Save save = new Save();
-
-        save.positionX = hero.transform.position.x;
-        save.positionY = hero.transform.position.y;
-
-        bf.Serialize(fs, save);
-
-        fs.Close();
-
-        PlayerPrefs.SetString("Save", path);
-
+        if (File.Exists(Hero.savePath))
+        {
+            return JsonUtility.FromJson<T>(File.ReadAllText(Hero.savePath));
+        }
+        else return default(T);
     }
-
-    public void LoadGame()
-    {
-
-        if (!File.Exists(path))
-            return;
-
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = new FileStream(PlayerPrefs.GetString("Save"), FileMode.Open);
-
-        Save save = (Save)bf.Deserialize(fs);
-        fs.Close();
-
-        hero.transform.position=new Vector3(save.positionX, save.positionY);
-        
-
-    }
-
-}
-
-[Serializable]
-public class Save
-{
-    public float positionX;
-    public float positionY;
-
-
-
 }

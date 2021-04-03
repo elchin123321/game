@@ -8,7 +8,11 @@ using System.IO;
 public class Hero : MonoBehaviour
 {
 
-    
+    static public  string savePath;
+    public class Data
+    {
+        public Vector3 pos;
+    } Data data;
 
     public float speed = 4.0f;
     public float jumpForce = 6f;
@@ -40,12 +44,22 @@ public class Hero : MonoBehaviour
 
     private float health;
 
-    
+    void OnApplicationQuit()
+    {
+        data = new Data();
+        data.pos = transform.position;
+        SaveLoad.SaveJSON(data);
+    }
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        savePath = Path.Combine(Application.dataPath, "Save.json");
+        data = SaveLoad.LoadJson<Data>();
+        if (data != null)
+        {
+            transform.position = data.pos;
+        }
 
         anim = GetComponent<Animator>();
         rg2D = GetComponent<Rigidbody2D>();
