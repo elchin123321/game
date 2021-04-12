@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.IO;
+using Unity.RemoteConfig;
 
 public class Hero : MonoBehaviour
 {
+
+    [SerializeField] private AnalyticsComponent analytics;
+   
 
     static public  string savePath;
     public class Data
@@ -32,6 +36,7 @@ public class Hero : MonoBehaviour
     private bool isRoll = false;
     float inputX;
 
+   
     [SerializeField]private ParticleSystem hitEffect;
     public float timeBtwAttack;
     public float startTimeBtwAttack;
@@ -51,9 +56,10 @@ public class Hero : MonoBehaviour
         SaveLoad.SaveJSON(data);
     }
     
-    // Start is called before the first frame update
+   
     void Start()
     {
+
         savePath = Path.Combine(Application.dataPath, "Save.json");
         data = SaveLoad.LoadJson<Data>();
         if (data != null)
@@ -134,6 +140,7 @@ public class Hero : MonoBehaviour
             {
                 bar.fillAmount = 0;
                 anim.SetTrigger("isDie");
+                analytics.OnPlayerDead();
                 //Destroy(gameObject);
                 goalBar.text = "You lose";
             }
@@ -219,5 +226,7 @@ public class Hero : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
+
+    
 
 }

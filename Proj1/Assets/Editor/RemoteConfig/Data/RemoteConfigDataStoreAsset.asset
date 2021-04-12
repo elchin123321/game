@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
+  m_Name: RemoteConfigDataStoreAsset
+  m_EditorClassIdentifier: 
+  rsKeyList:
+  - metadata:
+      entityId: 68d7ef68-c70d-4162-ac77-cce3ef04903a
+    rs:
+      key: hero_moveSpeed
+      type: float
+      value: 4
+  - metadata:
+      entityId: 057d4b6a-97e1-433f-81b9-f71386c8d4fb
+    rs:
+      key: hero_jumpForce
+      type: float
+      value: 6
+  rsLastCachedKeyList:
+  - metadata:
+      entityId: 68d7ef68-c70d-4162-ac77-cce3ef04903a
+    rs:
+      key: hero_moveSpeed
+      type: float
+      value: 4
+  - metadata:
+      entityId: 057d4b6a-97e1-433f-81b9-f71386c8d4fb
+    rs:
+      key: hero_jumpForce
+      type: float
+      value: 6
+  configId: c0703a6d-b17d-4420-9e61-307906621d60
+  currentEnvironmentId: 124545df-31d2-4494-8359-7a00544a9a24
+  environments:
+  - id: 9d7ac8fc-7482-49c5-a201-ff6e92d8ff7c
+    appId: 
+    name: Production (Default)
+    description: 
+    createdAt: 2021-04-04T20:11:29Z
+    updatedAt: 2021-04-04T20:11:29Z
+  - id: 67ca643e-6f1d-481c-b955-29c6ec55a3bb
+    appId: 
+    name: Release
+    description: 
+    createdAt: 2021-04-04T20:13:21Z
+    updatedAt: 2021-04-04T20:13:21Z
+  - id: 124545df-31d2-4494-8359-7a00544a9a24
+    appId: 
+    name: Development
+    description: 
+    createdAt: 2021-04-04T20:13:21Z
+    updatedAt: 2021-04-04T20:13:21Z
+  rulesList: []
+  lastCachedRulesList: []
+  addedRulesIDs: []
+  updatedRulesIDs: []
+  deletedRulesIDs: []

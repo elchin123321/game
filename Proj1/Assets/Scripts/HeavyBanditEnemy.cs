@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 public class HeavyBanditEnemy: EmenyAbstract
 {
+    [SerializeField] private AnalyticsComponent analytics;
     [SerializeField] private EnemyHealthBarLineRenderer healthBar;
     private float health=1;
     private Hero hero;
@@ -52,9 +53,9 @@ public class HeavyBanditEnemy: EmenyAbstract
         {
             isDead = true;
             anim.SetTrigger("die");
+            analytics.OnEnemyKilled();
             Destroy(gameObject, 1f);
         }
-        Debug.Log(health);
     }
     
     public void OnTriggerStay2D(Collider2D other)

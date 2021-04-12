@@ -644,10 +644,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: c7d95e06-43b1-497e-8cd3-6f980a7b3011
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Proj1
+  organizationId: elchin123321
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
